@@ -27,6 +27,7 @@ connection.connect(function(err) {
 //启动HTTP服务，绑定端口8080
 app.listen(8080);
 
+/*
 fs.readFile("https://marinajane00.github.io/node/my_http.js",function(err,data){
 	if(err){
 		console.log(err)
@@ -34,6 +35,8 @@ fs.readFile("https://marinajane00.github.io/node/my_http.js",function(err,data){
 	}
 	console.log(data)
 })
+*/
+
 // 加载客户端首页
 function handler(req, res) {
   fs.readFile(__dirname + '/client.html', function(err, data) {
@@ -65,7 +68,7 @@ var pollingLoop = function() {
     })
     .on('result', function(user) {
       // 加入查询到的结果到articles数组
-	  console.log(user)
+	  //console.log(user)
       articles.push(user);
     })
     .on('end', function() {

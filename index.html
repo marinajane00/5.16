@@ -4,28 +4,52 @@
 		<meta charset="UTF-8">
 		<title>index</title>
 	</head>
+	<style>
+	@import url('app.css')
+	</style>
 	<body>
+	<!-- 图表部分 -->
+	<div class='chart'>
+		<div id="main" style="width:675px; height:357px;"></div>
+	</div>
+	
+	<!-- 配置项部分 -->
+	<div class='option'>
+	</div>
+	
+	<!-- 数据部分 -->
+	<div class='data'>
+	
+	<!-- 数据>表格 -->
+	<div class='table'>
+	</div>
+	
+	<!-- 数据>excel -->
+	<div class="main">
+<div id="drop">
+            点击此处或者将文件拖至此处上传
+            <input type="file" id="upload" name="">
+        </div>
+<div id="table"></div>
+    </div>
+    <a href="sample.xls" target="_blank">下载样表</a>
         <time></time>
         <div id="container">Loading ...</div>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/socket.io/2.0.1/socket.io.js"></script>
-    <script src="https://cdn.bootcss.com/jquery/3.2.1/jquery.min.js"></script>
-    <script>
-        // 创建websocket连接
-        var socket = io.connect('http://localhost:8080');
-        // 把信息显示到div上
-        socket.on('notification', function (data) {
-        var articlesList = "<dl>";
-        $.each(data.articles,function(index,article){
-            articlesList += "<dt></dt>\n" +
-                         "<dd>" + article.id + "\n" +
-                         "<dd>" + article.name + "\n"
-                         "</dd>";
-        });
-        articlesList += "</dl>";
-        $('#container').html(articlesList);
-		console.log(data)
-        $('time').html('最后更新时间:' + data.time);
-      });
+	</div>
+	
+	
+	<!-- <script data-main="index.js" src='lib/require.js'></script> -->
+    
+	<script src='lib/echarts.js'></script>
+	<script src='lib/jszip.js'></script>
+	<script src='lib/xlsx.js'></script>
+	<script src='lib/vue.min.js'></script>
+	<script src='lib/socket.io.js'></script>
+	
+	<script src='lib/jquery.min.js'></script>
+	<script src="index.js"></script>
+	<script>
+	
     </script>
     </body>
 	</body>
