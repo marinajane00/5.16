@@ -25,7 +25,7 @@ connection.connect(function(err) {
 });
 
 //启动HTTP服务，绑定端口8080
-app.listen(8080);
+app.listen(7474);
 
 /*
 fs.readFile("https://marinajane00.github.io/node/my_http.js",function(err,data){

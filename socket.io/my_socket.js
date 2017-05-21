@@ -9,7 +9,7 @@ var server = http.createServer(function(req, res){
 //端口8000
 server.listen(7676);
 //创建socket
-/*
+
 //命名空间
 var main = io.listen(server);
 //添加连接监听
@@ -33,7 +33,7 @@ var news = main
   .on('connection', function (socket) {
     socket.emit('item', { news: 'item' });
   });
-*/
+
 /*
 io.on('connection', function (socket) {
   socket.on('message', function () { console.log("message")});

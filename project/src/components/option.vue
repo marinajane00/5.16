@@ -1,5 +1,6 @@
 <template>
   <div>
+  <p>option</p>
   </div>
 </template>
 
@@ -8,6 +9,9 @@ export default {
   data() {
     return {
     }
+  },
+  mounted(){
+	console.log('option.vue here')
   }
 }
 </script>

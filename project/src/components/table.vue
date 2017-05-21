@@ -1,8 +1,10 @@
 <template>
   <div>
-    <h1>I am a title.</h1>
-    <a> written by {{ author }} </a>
-	<button @click='send'>send</button>
+  <!-- 表格部分 -->
+  <p>表格部分</p>
+  <input :value="parentvalue[0][0]" @change="change(0,0,$event.target.value)" />
+  <button @click="send">send</button>
+  <span>{{tablevalue[0][0]}}</span>
   </div>
 </template>
 
@@ -12,12 +14,25 @@ import bus from '../assets/eventBus.js'
 export default {
   data () {
     return {
-      author: "微信公众号 jinkey-love"
+      author: "marina",
+	  fordata:[{name:1},{name:2},{name:3}]
     }
+  },
+  props:["parentvalue","tablevalue"],
+  mounted(){
+	var self=this;
+	console.log('table.vue here')
   },
   methods:{
 	send:function(){
-		bus.$emit('data',{name:'marina'});
+		bus.$emit('test','test');
+	},
+	change:function(i,y,e){
+	console.log(this.tablevalue)
+		this.tablevalue[i][y]=e;
+		console.log(e)
+		console.log(this.tablevalue)
+		this.$emit("changeparent",this.tablevalue)
 	}
   }
 }
