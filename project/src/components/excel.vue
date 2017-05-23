@@ -1,8 +1,8 @@
 <template>
   <div>
-  
-  <p>excel</p>
-  <div>Loading ...</div>
+
+  <h2>excel部分</h2>
+
   <!-- 拖入或选择excel -->
   <div id="drop">
 	点击此处或者将文件拖至此处上传
@@ -10,7 +10,9 @@
   </div>
   <div id="table"></div>
   <div>
-    <a href="sample.xls" target="_blank">下载样表</a>
+
+    <a href="javascript:;" target="_blank">下载样表</a>
+
     <time></time>
   </div>
   
@@ -48,9 +50,7 @@ export default {
 		})
 	},false);
 
-	}
-}
-function clearTable(){
+	function clearTable(){
 	tableC.innerHTML = '';
 }
 function makeTable(data){
@@ -97,7 +97,8 @@ function handleFile(files,callback){
 			var arr = fixData(data);
 			wb = X.read(btoa(arr),{type : 'base64'});
 		}
-		console.log(JSON.stringify(to_json(wb).Sheet1))
+
+		console.log(JSON.stringify(to_json(wb)))
 		callback && callback(to_json(wb));
 	}
 	if(rAbs){
@@ -136,12 +137,18 @@ function handleDragOver(){
 function handleDragLeave(){
 	drop.className = '';
 }
+
+	}
+}
+
 </script>
 
 <style>
 #drop{
-	width:600px;
-	height:300px;
-	border:2px dashed #333;
+
+	width:100px;
+	height:100px;
+	border:2px dashed #f00;
+
 }
 </style>

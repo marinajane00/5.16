@@ -1,10 +1,12 @@
 <template>
   <div>
   <!-- 表格部分 -->
-  <p>表格部分</p>
-  <input :value="parentvalue[0][0]" @change="change(0,0,$event.target.value)" />
-  <button @click="send">send</button>
-  <span>{{tablevalue[0][0]}}</span>
+
+  <h2>表格部分</h2>
+  <p>vuex table</p>
+  <input type="text" v-model="myData" />
+        <button @click="save()">保存</button>
+
   </div>
 </template>
 
@@ -15,7 +17,10 @@ export default {
   data () {
     return {
       author: "marina",
-	  fordata:[{name:1},{name:2},{name:3}]
+
+	  fordata:[{name:1},{name:2},{name:3}],
+	  myData:'myData'
+
     }
   },
   props:["parentvalue","tablevalue"],
@@ -27,12 +32,14 @@ export default {
 	send:function(){
 		bus.$emit('test','test');
 	},
-	change:function(i,y,e){
-	console.log(this.tablevalue)
-		this.tablevalue[i][y]=e;
-		console.log(e)
-		console.log(this.tablevalue)
-		this.$emit("changeparent",this.tablevalue)
+
+	save:function(){
+		let value = this.myData
+		this.$store.commit('increment')
+	},
+	toApp:function(){
+		this.$emit("toApp",{do:"从子组件传值到父组件"})
+
 	}
   }
 }

@@ -1,10 +1,13 @@
 <template>
   <div>
-	<p>图表部分</p>
+
+	<h2>图表部分</h2>
 	<div id='main' style="width:600px; height:300px;"></div>
+	<span>图表类型{{types}}</span>
+	<p>vuex frome table</p>
 	
-	<span>{{parentvalue[0][0]}}</span>
-	<span>{{tablevalue[0][0]}}</span>
+	<p>{{ $store.state.myData }}</p>
+
   </div>
 </template>
 
@@ -33,7 +36,9 @@ export default {
 		}
     }
   },
-  props:["parentvalue","tablevalue"],
+
+  props:["types"],
+
   mounted(){
 	console.log('chart.vue here')
 	var self=this;

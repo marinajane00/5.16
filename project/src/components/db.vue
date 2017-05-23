@@ -1,9 +1,6 @@
 <template>
   <div>
-
-  <h2>配置项部分</h2>
-  <p>symbolSize</p>
-
+    <h2>数据库连接部分</h2>
   </div>
 </template>
 
@@ -12,8 +9,6 @@ export default {
   data() {
     return {
     }
-  },
-  mounted(){
   }
 }
 </script>

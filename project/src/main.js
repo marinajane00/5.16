@@ -1,5 +1,10 @@
 import Vue from 'vue'
 import App from './App.vue'
+import VueResource from 'vue-resource'
+
+
+Vue.use(VueResource)
+
 
 import io from './assets/socket.io.js'
 new Vue({
@@ -19,10 +24,11 @@ chat.on('ha',function(e){
 news.on('news', function () {
 	news.emit('woot');
 });
-/*
-var socket = io.connect('http://localhost:7474');
+
+
+var socket = io.connect('http://localhost:7575');
 // 把信息显示到div上
 socket.on('notification', function (data) {
-	console.log(data.articles);
-	console.log(data.time);
-});*/
+	/*console.log(data.articles);
+	console.log(data.time);*/
+});
