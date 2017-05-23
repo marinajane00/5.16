@@ -1,5 +1,6 @@
 <template>
   <div>
+  
     <h1>单个chart 入口</h1>
 	
 	<div class='chartWrap'>
@@ -25,7 +26,7 @@
 </template>
 
 <script>
-import store from './vuex/store'
+import store from './vuex/store.js'
 import ch from './components/chart.vue'
 import op from './components/option.vue'
 import ta from './components/table.vue'
@@ -42,7 +43,7 @@ export default {
 		db:true,
 		option:true
 	  },
-	  types:'scatter3D'
+	  types:'bar3D'
     }
   },
   mounted(){

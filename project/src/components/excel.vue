@@ -22,13 +22,18 @@
 
 <script>
 import XLSX from "xlsx"
+import store from '../vuex/store'
+
 export default {
   data() {
     return {
     }
   },
+  methods:{
+  },
   mounted(){
 	console.log('excel.vue here')
+	var self=this;
 	//XLSX
 	var drop = document.getElementById("drop"),
 		upload = document.getElementById("upload"),
@@ -50,13 +55,15 @@ export default {
 		})
 	},false);
 
-	function clearTable(){
+function clearTable(){
 	tableC.innerHTML = '';
 }
 function makeTable(data){
 	clearTable();
+	console.log(data)
 	for(var index in data){ //遍历每个表
-		var table = document.createElement("table"),
+		self.$store.commit('changeTable',data[index])
+		/*var table = document.createElement("table"),
 			tr = document.createElement("tr"),
 			td = document.createElement("td"),
 			keys = Object.keys(data[index][0]);
@@ -81,13 +88,14 @@ function makeTable(data){
 			}
 			table.appendChild(tr);
 		}
-		tableC.appendChild(table);
+		tableC.appendChild(table);*/
 	}
 }
 function handleFile(files,callback){
 	var f = files[0],
 		reader = new FileReader(),
 		name = f.name;
+		console.log(name)
 	reader.onload = function(){
 		var data = event.target.result,
 			wb;
@@ -97,8 +105,6 @@ function handleFile(files,callback){
 			var arr = fixData(data);
 			wb = X.read(btoa(arr),{type : 'base64'});
 		}
-
-		console.log(JSON.stringify(to_json(wb)))
 		callback && callback(to_json(wb));
 	}
 	if(rAbs){

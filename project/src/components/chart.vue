@@ -2,11 +2,9 @@
   <div>
 
 	<h2>图表部分</h2>
-	<div id='main' style="width:600px; height:300px;"></div>
+	<div id="drag" style="padding:20px; border:1px solid #000" draggable="true"><div id='main' style="width:600px; height:300px;"></div></div>
 	<span>图表类型{{types}}</span>
-	<p>vuex frome table</p>
-	
-	<p>{{ $store.state.myData }}</p>
+	<p draggable="true">store: {{$store.state.types}}</p>
 
   </div>
 </template>
@@ -15,25 +13,14 @@
 import echarts from 'echarts'
 import echarts_gl from 'echarts-gl'
 import bus from '../assets/eventBus.js'
+import store from '../vuex/store'
+
+var main;
 
 export default {
   data() {
     return {
-		msg:'me',
-		option:{
-			grid3D: {},
-			xAxis3D: {},
-			yAxis3D: {},
-			zAxis3D: {},
-			series: [{
-				type: 'scatter3D',
-				symbolSize: 50,
-				data: [[-1, -1, -1], [0, 0, 0], [1, 1, 1]],
-				itemStyle: {
-					opacity: 1
-				}
-			}]
-		}
+		option:{}
     }
   },
 
@@ -41,16 +28,26 @@ export default {
 
   mounted(){
 	console.log('chart.vue here')
-	var self=this;
 	
-	var test=echarts.init(document.getElementById("main"));
-		test.setOption(this.option);
+	//路由传参 ||  props传参
+	console.log(store.state.myData)
+	this.option=store.state[this.types];
+	
+	//生成图表
+	main=echarts.init(document.getElementById("main"));
+	main.setOption(this.option);
+	console.log(document.getElementById("main"))
 	
 	//组件间通讯
 	/*bus.$on('changeparent',function(d){
 		this.parentvalue=d
 	})*/
-  }
+  },
+  watch: {
+		"$store.state.types" () {
+			main.setOption(store.state[store.state.types])
+		}
+	}
 }
 </script>
 

@@ -5,14 +5,14 @@
 		<title>index</title>
 	</head>
 	<style>
-	@import url('app.css')
 	</style>
 	<body>
 	<!-- 图表部分 -->
+	<div id="vm">
 	<div class='chart'>
 		<div id="main" style="width:675px; height:357px;"></div>
 	</div>
-	
+	<input @change="change" v-model="option.series[0].symbolSize" />
 	<!-- 配置项部分 -->
 	<div class='option'>
 	</div>
@@ -36,11 +36,12 @@
         <time></time>
 	</div>
 	
-	
+	</div>
 	<!-- <script data-main="index.js" src='lib/require.js'></script> -->
     
 	<script src='lib/echarts.js'></script>
 	<script src='lib/jszip.js'></script>
+	<script src='lib/echarts-gl.min.js'></script>
 	<script src='lib/xlsx.js'></script>
 	<script src='lib/vue.min.js'></script>
 	<script src='lib/socket.io.js'></script>

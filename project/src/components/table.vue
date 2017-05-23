@@ -3,24 +3,19 @@
   <!-- 表格部分 -->
 
   <h2>表格部分</h2>
-  <p>vuex table</p>
-  <input type="text" v-model="myData" />
-        <button @click="save()">保存</button>
-
+  <button @click="save()">保存</button>
+<div><span v-for="i in $store.state[$store.state.types].series[0].data"><input v-for="y in i" :value="y" /></span></div>
   </div>
 </template>
 
 <script type="text/javascript">
 import bus from '../assets/eventBus.js'
+import store from '../vuex/store'
 
 export default {
   data () {
     return {
-      author: "marina",
-
-	  fordata:[{name:1},{name:2},{name:3}],
-	  myData:'myData'
-
+		
     }
   },
   props:["parentvalue","tablevalue"],
@@ -30,14 +25,16 @@ export default {
   },
   methods:{
 	send:function(){
+		//组件间传值
 		bus.$emit('test','test');
 	},
 
 	save:function(){
-		let value = this.myData
+		//组件数据同步
 		this.$store.commit('increment')
 	},
 	toApp:function(){
+		//子组件传送至父组件
 		this.$emit("toApp",{do:"从子组件传值到父组件"})
 
 	}
