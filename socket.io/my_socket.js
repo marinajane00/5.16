@@ -5,18 +5,57 @@ var server = http.createServer(function(req, res){
   res.writeHead(200,{ 'Content-Type': 'text/html' }); 
   res.end('<h1>Hello Socket Lover!</h1>');
 });
-
+var i=0;
 //端口8000
 server.listen(7676);
 //创建socket
+var main = io.listen(server);
 
+main.sockets.on('connection', function(socket) {
+	console.log("请求次数"+i)
+	  //1,控制器正发送id
+	  socket.on("sid",function(e){
+		  //theId=e;
+		  //2,让模板识别id
+		  console.log("监听sid"+e)
+		  
+		  socket.broadcast.emit("tid",e)
+	  });
+	  
+	i++;
+});
 //命名空间
+/*
 var main = io.listen(server);
 //添加连接监听
 var chat = main
   .of('/chat')
   .on('connection', function (socket) {
 	  chat.emit('ha',{ma:'ma'})
+	  
+	  
+	  //1,控制器正发送id
+	  chat.on("sid",function(e){
+		  //theId=e;
+		  //2,让模板识别id
+		  console.log("监听sid")
+		  chat.emit("tid",e)
+	  });
+	  //5,控制器发送指令
+	  chat.on("do",function(e){
+		  console.log("监听tdo")
+		  chat.emit("tdo",e)
+	  })
+	  //3,模板识别之后
+	  chat.on("checkedId",function(e){
+		  console.log("监听checkedId")
+		  if(e == true){
+			  //4,告诉控制器
+			  chat.emit("result",true)
+		  }
+	  })
+	 
+	  
     socket.emit('a message', {
         that: 'only'
       , '/chat': 'will get'
@@ -33,7 +72,9 @@ var news = main
   .on('connection', function (socket) {
     socket.emit('item', { news: 'item' });
   });
-
+ */
+ 
+ 
 /*
 io.on('connection', function (socket) {
   socket.on('message', function () { console.log("message")});

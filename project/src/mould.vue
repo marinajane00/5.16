@@ -5,10 +5,14 @@
 </template>
 
 <script>
+import io from './assets/socket.io.js'
 export default {
   data() {
     return {
     }
+  },
+  mounted(){
+	
   }
 }
 </script>

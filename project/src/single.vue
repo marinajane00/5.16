@@ -27,6 +27,7 @@
 
 <script>
 import store from './vuex/store.js'
+import io from './assets/socket.io.js'
 import ch from './components/chart.vue'
 import op from './components/option.vue'
 import ta from './components/table.vue'
@@ -47,6 +48,19 @@ export default {
     }
   },
   mounted(){
+	//控制器空间
+		console.log("这里是空军部，这里是空军部，请指挥，请指挥")
+	// 创建websocket连接
+	var self=this;
+	var socket = io.connect("http://localhost:7676");
+	
+	//socket.emit("sid",133);
+	
+	socket.on("tid",function(e){
+		console.log("监听tid"+e)
+	})
+	
+	
   },
   methods:{
 	toSingle:function(e){

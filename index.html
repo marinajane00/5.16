@@ -49,6 +49,10 @@
 	<script src='lib/jquery.min.js'></script>
 	<script src="index.js"></script>
 	<script>
+	var socket = io.connect("http://localhost:7676");
+	
+	
+	socket.emit("sid",133);
 	
     </script>
     </body>
