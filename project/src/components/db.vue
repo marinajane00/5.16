@@ -31,7 +31,7 @@ export default {
 	
 	
 	socket.on('notification', function (data) {
-	
+		console.log(data)
 		//数据库实时更新
 		//self.$store.commit('changeTable',data[self.api])
 	});

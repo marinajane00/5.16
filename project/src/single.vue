@@ -1,20 +1,15 @@
 <template>
   <div>
-  
-    <h1>单个chart 入口</h1>
-	
-	<div class='chartWrap'>
-	
+	<button onclick="alert('hei')" id="fire">fire</button>
 	<!-- 图表组件 -->
     <ch class='item' v-if="show.chart" :types="types" ></ch>
 	
 	<!-- excel组件 -->
 	<ex class='item' v-if="show.excel"></ex>
 	
-	</div>
-	
 	<!-- 配置参数组件 -->
-	<op class='item' v-if="show.option"></op>
+	<!-- <op class='item' v-if="show.option" v-model='text'></op> -->
+	<op class='item' v-if="show.option" ></op>
 	
 	<!-- 表格组件 -->
 	<ta class='item' v-if="show.table" @toSingle="toSingle"></ta>
@@ -49,18 +44,19 @@ export default {
   },
   mounted(){
 	//控制器空间
-		console.log("这里是空军部，这里是空军部，请指挥，请指挥")
+	console.log("这里是空军部，这里是空军部，请指挥，请指挥")
 	// 创建websocket连接
 	var self=this;
 	var socket = io.connect("http://localhost:7676");
 	
 	//socket.emit("sid",133);
-	
+
 	socket.on("tid",function(e){
-		console.log("监听tid"+e)
+		console.log("event"+e)
+		//只有ie支持 = =|||
+		//document.getElementById("fire").fireEvent(e);
+		
 	})
-	
-	
   },
   methods:{
 	toSingle:function(e){
@@ -71,6 +67,9 @@ export default {
   components: { ch,op,ta,ex,db },
   store:store
 }
+
+
+//拖拽
 </script>
 
 <style scoped>
@@ -78,14 +77,7 @@ html,body,p{
 	margin:0;
 	padding:0;
 }
-.chartWrap{
-	width:100%;
-	height: 500px;
-}
 .item{
 	border:1px solid #000;
-	width:600px;
-	height:300px;
-	float:left;
 }
 </style>

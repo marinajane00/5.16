@@ -51,7 +51,7 @@ export default {
 	},
 	changeType:function(){
 		//组件数据同步
-		this.$store.commit('changeTypes',"scatter3D")
+		this.$store.commit('changeTypes',"pie")
 	}
   },
   components: {  },
