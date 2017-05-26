@@ -17,9 +17,10 @@
 	<p>值域值：{{range}}</p>
 	
 	<!-- 这个元素用来克隆绑定的事件 -->
-	<div class='added' draggable="true" v-show="child.length>0" @dragstart="test.drag($event)" @click="swing($event)" v-for="(i,index) in child" :id="'added'+index">
+	<div class='added' draggable="true" v-show="child.length>1" @dragstart="test.drag($event)" @click="swing($event)" v-for="(i,index) in child" :id="'added'+index">
 		<div :id="'main'+index" style="width:600px; height:300px;" ></div>
 	</div>
+	<button @click="clear">清空</button>
 	
 	<p draggable="true" @dragstart="test.drag($event)" @click="swing($event)">测试，可以将我拖动到下方或者图表区域</p>
 	<!-- 页面容器 -->
@@ -48,23 +49,19 @@ export default {
     return {
 		show: true,
 		range:50,
-		child:[]
+		child:[0]
     }
   },
   props:["test"],
   mounted(){
-  var main=echarts.init(document.getElementById('main0'));
-		main.setOption(store.state[store.state.types]);
   },
   methods:{
 	  chose(size){
-	  this.child.push(this.child.length+1)
-		console.log(this.child)
-		console.log('main'+(this.child.length-1))
-		
+	  
 		var main=echarts.init(document.getElementById('main'+(this.child.length-1)));
 		main.setOption(store.state[store.state.types]);
 		
+		this.child.push(this.child.length)
 		
 		/*
 		var para=document.getElementsByClassName("added")[0].cloneNode(true);
@@ -79,6 +76,9 @@ export default {
 		var element=document.getElementById("wrap");
 		element.appendChild(para);
 		*/
+	  },
+	  clear(){
+		this.child.splice(1,this.child.length);
 	  },
 	  done(){
 	  //上传到后台存储
