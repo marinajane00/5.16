@@ -17,9 +17,11 @@
 	<p>值域值：{{range}}</p>
 	
 	<!-- 这个元素用来克隆绑定的事件 -->
-	<div class='added' draggable="true" @dragstart="test.drag($event)" @click="swing($event)" id="added0"><div id='main0' style="width:600px; height:300px;" ></div></div>
+	<div class='added' draggable="true" v-show="child.length>0" @dragstart="test.drag($event)" @click="swing($event)" v-for="(i,index) in child" :id="'added'+index">
+		<div :id="'main'+index" style="width:600px; height:300px;" ></div>
+	</div>
 	
-	<p draggable="true" @dragstart="test.drag($event)" id="test" @click="swing($event)">测试，可以将我拖动到下方或者图表区域</p>
+	<p draggable="true" @dragstart="test.drag($event)" @click="swing($event)">测试，可以将我拖动到下方或者图表区域</p>
 	<!-- 页面容器 -->
 	<div class='wrap' @drop="test.drop($event)" @dragover="test.allowDrop($event)" id="wrap">
 	<p class='test' >位置一</p><p class="test">位置二</p>
@@ -39,33 +41,47 @@ var URL="http://localhost:7474"
 //记得url改变后再次调用
 var socket = io.connect(URL);
 var i=0;
+console.log("!!!!!————————————————————————mould")
 
 export default {
   data() {
     return {
 		show: true,
-		range:50
+		range:50,
+		child:[]
     }
   },
   props:["test"],
   mounted(){
-	//将当前iframe的html上传到后台存储
+  var main=echarts.init(document.getElementById('main0'));
+		main.setOption(store.state[store.state.types]);
   },
   methods:{
 	  chose(size){
-		i++;
+	  this.child.push(this.child.length+1)
+		console.log(this.child)
+		console.log('main'+(this.child.length-1))
+		
+		var main=echarts.init(document.getElementById('main'+(this.child.length-1)));
+		main.setOption(store.state[store.state.types]);
+		
+		
+		/*
 		var para=document.getElementsByClassName("added")[0].cloneNode(true);
 		var chart=para.firstChild;
 		//para.style.width=size;
 		//生成图表
 		para.id="added"+i;
 		chart.id="main"+i;
-		var main=echarts.init(chart);
-		main.setOption(store.state[store.state.types]);
+		*/
+		
+		/*
 		var element=document.getElementById("wrap");
 		element.appendChild(para);
+		*/
 	  },
 	  done(){
+	  //上传到后台存储
 	  //js部分
 	  var strjs="";
 	  strjs+="var main=echarts.init(document.getElementById('main1'));main.setOption("+JSON.stringify(store.state[store.state.types])+");"
@@ -91,8 +107,12 @@ export default {
 			
 	  },
 	  swing(e){
-	  console.log("swing")
+		this.callback();
 		console.log(e.target)
+	  },
+	  callback(){
+		console.log(document.getElementById("main"+(this.child.length-1)))
+		console.log(document.getElementById("main0"))
 	  }
   }
 }
