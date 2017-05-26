@@ -14,7 +14,9 @@ Vue.use(VueResource)
 //路由配置
 import VueRouter from 'vue-router'
 import single from './single.vue'
-import mould from './mould.vue'
+/*import mould from './mould.vue'*/
+import mould from './components/route.vue'
+
 Vue.use(VueRouter)
 
 const router = new VueRouter({

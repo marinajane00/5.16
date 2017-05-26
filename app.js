@@ -47,8 +47,8 @@ function handler(req, res) {
 /*
  * 这个就是实现主要功能的方法，间隔3秒去查询数据库表，有更新就推送给客户端
  */
-var pollingLoop = function() {
-
+var pollingLoop = function(data) {
+/*
   // 查询数据库
   var query = connection.query('SELECT * FROM VIEW1'),
     articles = []; // 用于保存查询结果
@@ -67,20 +67,22 @@ var pollingLoop = function() {
     })
     .on('end', function() {
       // 检查是否有客户端连接，有连接就继续查询数据库
-      /*if (connectionsArray.length) {
+      if (connectionsArray.length) {
         pollingTimer = setTimeout(pollingLoop, POLLING_INTERVAL);
 
         updateSockets({
           articles: articles
         });
-      }*/
+      }
     });
-	
+	*/
 	//保存iframe
-	/*fs.writeFile("test.html", data, function (err) {
+	fs.writeFile("./project/public/test.html", data, function (err) {
+
 	  if (err) throw err;
 	  console.log('写入完成');
-	});*/
+	});
+	
 
 };
 
@@ -91,14 +93,21 @@ io.sockets.on('connection', function(socket) {
   console.log('当前连接客户端数量:' + connectionsArray.length);
   // 有客户端连接的时候才去查询，不然都是浪费资源
   if (!connectionsArray.length) {
-	  /*socket.on('news', function (data) {
+	  socket.on('news', function (data) {
     console.log(data);
 	//上传文件至服务器
 	pollingLoop(data);
     socket.emit('my other event', { my: 'data' });
-  
+	
     
-	});*/
+	});
+	socket.on('js', function (data) {
+  fs.writeFile("./project/public/test.js", data, function (err) {
+
+	  if (err) throw err;
+	  console.log('写入js完成');
+	});
+	});
 	
   }
 

@@ -52,7 +52,9 @@
 	<script>
 	var socket = io.connect("http://localhost:7676");
 	
-	
+	//触发obj元素上绑定click事件
+	console.log($("#main"))
+
 	socket.emit("sid","onclick");
 	function hei(){
 		fire.fireEvent("onclick");

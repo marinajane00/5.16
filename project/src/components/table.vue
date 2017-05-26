@@ -2,7 +2,7 @@
   <div>
   <!-- 表格部分 -->
 
-  <h2>表格部分</h2>
+  <h2 @click="toApp">表格部分</h2>
   <button @click="save()">保存</button>
 <div><span v-for="i in $store.state[$store.state.types].series[0].data"><input v-for="y in i" :value="y" /></span></div>
   </div>
@@ -35,7 +35,7 @@ export default {
 	},
 	toApp:function(){
 		//子组件传送至父组件
-		this.$emit("toApp",{do:"从子组件传值到父组件"})
+		this.$emit("toSingle",{do:"从子组件传值到父组件"})
 
 	}
   }

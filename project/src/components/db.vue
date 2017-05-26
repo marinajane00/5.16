@@ -11,12 +11,12 @@
 </template>
 
 <script>
-import io from '../assets/socket.io.js'
+//import io from '../assets/socket.io.js'
 import store from '../vuex/store'
 
 var URL="http://localhost:7474"
 //记得url改变后再次调用
-var socket = io.connect(URL);
+//var socket = io.connect(URL);
 
 export default {
   data() {
@@ -29,13 +29,13 @@ export default {
   mounted(){
 	var self=this;
 	
-	
+	/*
 	socket.on('notification', function (data) {
 		console.log(data)
 		//数据库实时更新
 		//self.$store.commit('changeTable',data[self.api])
 	});
-	
+	*/
 		
 		
 	
@@ -59,11 +59,12 @@ var iframeContent = iframeDocument.getElementsByTagName('body');
 			iframeContent[0].appendChild(el);
 			iframeContent[0].appendChild(div);
 		}
-			//将当前iframe的html上传到后台存储
-		socket.emit('news', window.frames[0].document.body.innerHTML);
+		/*
+		socket.emit('news', document.getElementById("wraps").innerHTML);
 	    socket.on('my other event', function (data) {
 			console.log(data);
 	    });
+		*/
 	}
   }
 }

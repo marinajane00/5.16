@@ -48,6 +48,7 @@ export default {
 }
 
 /*
+//模拟v-model
 export default {
         props: ['value'],
         data(){

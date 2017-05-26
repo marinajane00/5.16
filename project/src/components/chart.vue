@@ -3,31 +3,11 @@
 
 	<h2>图表部分</h2>
 	
-	<div style="padding:30px;" @drop="drop($event)" @dragover="allowDrop($event)"></div>
-	<!-- iframe -->
-	<div class='drag' id="div1" @drop="drop($event)" @dragover="allowDrop($event)">
-	  <img src="http://www.w3school.com.cn/i/eg_dragdrop_w3school.gif" draggable="true" @dragstart="drag($event)" id="drag1" />
-	  <img src="http://www.w3school.com.cn/i/eg_dragdrop_w3school.gif" draggable="true" @dragstart="drag($event)" id="drag2"/>
+	<div class='drag' @drop="test.drop($event)" @dragover="test.allowDrop($event)" contenteditable id="wraps">
+	<div id='main' style="width:600px; height:300px;" draggable="true" @dragstart="test.drag($event)" ></div>
+	<span>图表类型</span>
+	<p>store: {{$store.state.types}}</p>
 	</div>
-	
-	<input list="browsers" id="chose" @change="chose($event.target.value)">
-	<datalist id="browsers">
-	  <option value="30%"></option>
-	  <option value="40%"></option>
-	  <option value="20%"></option>
-	  <option value="60%"></option>
-	  <option value="50%"></option>
-	</datalist>
-	<p draggable="true" @dragstart="drag($event)" id="p1">hei</p>
-	<div class='added' @drop="drop($event)" @dragover="allowDrop($event)" contenteditable data-item="0"></div>
-	
-	<div class='drag' @drop="drop($event)" @dragover="allowDrop($event)" contenteditable id="wraps">
-	<img src="http://s16.sinaimg.cn/middle/54aebfe7g93929b77781f&690" />
-	</div>
-	<div id='main' style="width:600px; height:300px;" draggable="true" @dragstart="drag($event)" ></div>
-	<span>图表类型{{types}}</span>
-	<p draggable="true">store: {{$store.state.types}}</p>
-
   </div>
 </template>
 
@@ -45,15 +25,13 @@ export default {
 		option:{}
     }
   },
-
-  props:["types"],
-
+props:["test"],
   mounted(){
 	console.log('chart.vue here')
 	
 	//路由传参 ||  props传参
 	console.log(store.state.myData)
-	this.option=store.state[this.types];
+	this.option=store.state[store.state.types];
 	
 	//生成图表
 	main=echarts.init(document.getElementById("main"));
@@ -66,40 +44,7 @@ export default {
 	})*/
   },
   methods:{
-  chose(size){
-	var para=document.getElementsByClassName("added")[0].cloneNode(true);
-	para.style.width=size;
-
-	var element=document.getElementById("wraps");
-	element.appendChild(para);
-  },
-	allowDrop(ev)
-	{
-		ev.preventDefault();
-	},
-	drag(ev)
-{
-ev.dataTransfer.setData("Text",ev.target.id);
-
-},
-drop(ev)
-{
-ev.preventDefault();
-
-var e = event || window.event;
-            
-
-			
-var data=ev.dataTransfer.getData("Text");
-/*
-//iframe 不可用
-console.log(e.clientX,e.clientY);
-document.getElementById(data).style.left=e.clientX+"px"
-*/
-console.log(ev.target)
-ev.target.appendChild(document.getElementById(data));
-
-}
+  
   },
   watch: {
 		"$store.state.types" () {
