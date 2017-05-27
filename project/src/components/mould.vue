@@ -6,29 +6,33 @@
 	<!-- 下拉框方式 -->
 	<input list="browsers" id="chose" @change="chose($event.target.value)">
 	<datalist id="browsers">
-	  <option value="30%"></option>
-	  <option value="40%"></option>
-	  <option value="20%"></option>
-	  <option value="60%"></option>
-	  <option value="50%"></option>
+	  <option value="30"></option>
+	  <option value="40"></option>
+	  <option value="20"></option>
+	  <option value="60"></option>
+	  <option value="50"></option>
 	</datalist>
 	<!-- 值域方式 -->
 	<input type="range" min="0" max="100" v-model="range">
 	<p>值域值：{{range}}</p>
 	
+	<button @click="shownow=true">show</button>
+	<p v-if="shownow">nononono</p>
+	<button @click="generate">生成元素</button>
+	
 	<!-- 这个元素用来克隆绑定的事件 -->
-	<div class='added' draggable="true" v-show="child.length>1" @dragstart="test.drag($event)" @click="swing($event)" v-for="(i,index) in child" :id="'added'+index">
+	<div class="added" draggable="true" v-show="child.length>1" @dragstart="test.drag($event)" @click="swing($event)" v-for="(i,index) in child" :id="'added'+index">
 		<div :id="'main'+index" style="width:600px; height:300px;" ></div>
 	</div>
 	<button @click="clear">清空</button>
 	
-	<p draggable="true" @dragstart="test.drag($event)" @click="swing($event)">测试，可以将我拖动到下方或者图表区域</p>
+	<!--<p draggable="true" @dragstart="test.drag($event)" @click="swing($event)">测试，可以将我拖动到下方或者图表区域</p>-->
 	<!-- 页面容器 -->
 	<div class='wrap' @drop="test.drop($event)" @dragover="test.allowDrop($event)" id="wrap">
 	<p class='test' >位置一</p><p class="test">位置二</p>
 	</div>
 	<button @click="done">完成</button>
-	
+	<el v-if="show" :test="test" v-for="(item,index) in el" :type="type"></el>
   </div>
 </template>
 
@@ -37,11 +41,11 @@ import echarts from 'echarts'
 import echarts_gl from 'echarts-gl'
 import store from '../vuex/store'
 import io from '../assets/socket.io.js'
+import el from './element.vue'
 
 var URL="http://localhost:7474"
 //记得url改变后再次调用
 var socket = io.connect(URL);
-var i=0;
 console.log("!!!!!————————————————————————mould")
 
 export default {
@@ -49,18 +53,23 @@ export default {
     return {
 		show: true,
 		range:50,
-		child:[0]
+		child:[0],
+		shownow:false,
+		el:[0],
+		type:"p"
     }
   },
   props:["test"],
   mounted(){
+  	var main=echarts.init(document.getElementById('main'+(this.child.length-1)));
+  	this.child.push(main)
+  	main.setOption(store.state[store.state.types])
   },
   methods:{
 	  chose(size){
 	  
-		var main=echarts.init(document.getElementById('main'+(this.child.length-1)));
-		main.setOption(store.state[store.state.types]);
-		
+		var main=echarts.init(document.getElementById('main'+(this.child.length-1))).setOption(store.state[store.state.types]);
+		document.getElementsByClassName("added")[this.child.length-1].style.width=size+'px';
 		this.child.push(this.child.length)
 		
 		/*
@@ -103,18 +112,22 @@ export default {
 	    socket.on('my other event', function (data) {
 			console.log(data);
 	    });
-	  console.log("完成")
+	  	console.log("文件写入完成")
 			
 	  },
 	  swing(e){
-		this.callback();
-		console.log(e.target)
+			console.log(e.target)
+			store.state.types=this.child[1].getOption().series[0].type;
+			store.state[store.state.types]=this.child[1].getOption();
 	  },
 	  callback(){
-		console.log(document.getElementById("main"+(this.child.length-1)))
-		console.log(document.getElementById("main0"))
+	  },
+	  generate(e){
+	  	this.el.push(this.el.length)
+	  	this.type="div"
 	  }
-  }
+  },
+  components: { el }
 }
 </script>
 
@@ -126,5 +139,8 @@ export default {
 .test{
 	margin:10px;
 	border:1px solid #f00;
+}
+.five{
+	width:50%;
 }
 </style>

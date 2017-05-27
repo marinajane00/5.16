@@ -92,9 +92,9 @@ export default {
 
 	socket.on("tid",function(e){
 		console.log("event"+e)
-		//只有ie支持 = =|||
+		//触发事件：ie
 		//document.getElementById("fire").fireEvent(e);
-		
+		//document.getElementById("fire")[e]();
 	})
   },
   methods:{

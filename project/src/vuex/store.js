@@ -42,7 +42,11 @@ const state = {
     myData: 0,
 	types:arr[i],
     scatter3D:{
-		grid3D: {},
+		grid3D: {
+			viewControl:{
+				autoRotate:true
+			}
+		},
 		xAxis3D: {},
 		yAxis3D: {},
 		zAxis3D: {},
@@ -83,6 +87,9 @@ const state = {
 				ambient: {
 					intensity: 0.3
 				}
+			},
+			viewControl:{
+				autoRotate:true
 			}
 		},
 		series: [{

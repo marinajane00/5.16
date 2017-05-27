@@ -35,24 +35,24 @@ export default {
   	}
   },
   methods:{
-	login(){
-		//client DB
-	    /*
-		this.$http.get('http://localhost:7474').then((response) => {
-			// 响应成功回调
-			console.log(response)
-			console.log("以上是请求成功数据")
-		}, (response) => {
-			// 响应错误回调
-			console.log(response)
-			console.log("出错了~~~~(>_<)~~~~")
-		});
-		*/
-	},
-	changeType:function(){
-		//组件数据同步
-		this.$store.commit('changeTypes',"pie")
-	}
+		login(){
+			//client DB
+		    /*
+			this.$http.get('http://localhost:7474').then((response) => {
+				// 响应成功回调
+				console.log(response)
+				console.log("以上是请求成功数据")
+			}, (response) => {
+				// 响应错误回调
+				console.log(response)
+				console.log("出错了~~~~(>_<)~~~~")
+			});
+			*/
+		},
+		changeType:function(){
+			//组件数据同步
+			this.$store.commit('changeTypes',"pie")
+		}
   },
   components: {  },
   store:store
