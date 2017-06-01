@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<meta charset="UTF-8">
+	<title>client</title>
+</head>
+<style>
+	html,body{
+		margin:0;
+		padding:0;
+		text-align:center;
+	}
+	div{
+		padding:1rem;
+		margin:1rem;
+		color:#61accd;
+		border:3px dashed #888;
+		border-radius:5px;
+	}
+</style>
+<body>
+
+<div onclick="send('play')">Play</div>
+
+  <script src='socket.io/socket.io.js'></script>
+  <script>
+  var socket = io.connect("http://localhost:7676");
+
+  function send(e){
+	console.log("发送了"+e)
+	socket.emit("client",e);
+  }
+  
+  </script>
+</body>
+</html>

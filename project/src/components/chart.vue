@@ -3,10 +3,9 @@
 
 	<h2>图表部分</h2>
 	
-	<div class='drag' @drop="test.drop($event)" @dragover="test.allowDrop($event)" contenteditable id="wraps">
-	<div id='main' style="width:600px; height:300px;" draggable="true" @dragstart="test.drag($event)" ></div>
-	<span>图表类型</span>
-	<p>store: {{$store.state.types}}</p>
+	<!-- <div class='drag' @drop="test.drop($event)" @dragover="test.allowDrop($event)" contenteditable id="wraps"> -->
+	<div class="drag">
+		<div :id="'main'+index" style="width:600px; height:300px;" draggable="true" @dragstart="test.drag($event)" ></div>
 	</div>
   </div>
 </template>
@@ -25,7 +24,7 @@ export default {
 		option:{}
     }
   },
-props:["test"],
+props:["test","index"],
   mounted(){
 	console.log('chart.vue here')
 	
@@ -34,9 +33,8 @@ props:["test"],
 	this.option=store.state[store.state.types];
 	
 	//生成图表
-	main=echarts.init(document.getElementById("main"));
+	main=echarts.init(document.getElementById("main"+this.index));
 	main.setOption(this.option);
-	console.log(document.getElementById("main"))
 	
 	//组件间通讯
 	/*bus.$on('changeparent',function(d){
@@ -48,14 +46,26 @@ props:["test"],
   },
   watch: {
 		"$store.state.types" () {
-			main=echarts.init(document.getElementById("main"));
+			main=echarts.init(document.getElementById("main"+this.index));
 			main.setOption(store.state[store.state.types])
+		},
+		"$store.state.move" () {
+			main=echarts.init(document.getElementById("main"+this.index));
+			main.setOption(store.state[store.state.types])
+			store.state.move=false;
+		},
+		"$store.state.dataChanged" () {
+			console.log("dataChanged")
+			console.log(store.state[store.state.types])
+			main=echarts.init(document.getElementById("main"+this.index));
+			main.setOption(store.state[store.state.types])
+			store.state.dataChanged=false;
 		}
 	}
 }
 </script>
 
-<style lang="less">
+<style>
 #main{
 	width:50%;
 	height:30%;

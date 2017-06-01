@@ -6,14 +6,12 @@
   <!-- 拖入或选择excel -->
   <div id="drop">
 	点击此处或者将文件拖至此处上传
-	<input type="file" id="upload" name="">
+	<input type="file" id="upload" name="" v-show="false" @change="file($event.target)">
   </div>
   <div id="table"></div>
   <div>
 
-    <a href="javascript:;" target="_blank">下载样表</a>
-
-    <time></time>
+    <!-- <a href=".xlsx" id="download">下载样表</a> -->
   </div>
   
   </div>
@@ -30,6 +28,9 @@ export default {
     }
   },
   methods:{
+	file(e){
+		 console.log(window.URL.createObjectURL(e.files[0]))
+	}
   },
   mounted(){
 	console.log('excel.vue here')
@@ -62,7 +63,7 @@ function makeTable(data){
 	clearTable();
 	console.log(data)
 	for(var index in data){ //遍历每个表
-		self.$store.commit('changeTable',data[index])
+		self.$store.commit('changeTable',data[index],true)
 		/*var table = document.createElement("table"),
 			tr = document.createElement("tr"),
 			td = document.createElement("td"),
@@ -151,10 +152,14 @@ function handleDragLeave(){
 
 <style>
 #drop{
-
-	width:100px;
-	height:100px;
-	border:2px dashed #f00;
-
+	width:6rem;
+	height:6rem;
+	margin:0 auto;
+	border:2px dashed #888;
+	cursor:pointer;
+	display:flex;
+	justify-content: center;
+    align-items: center;
+	color:#61accd;
 }
 </style>

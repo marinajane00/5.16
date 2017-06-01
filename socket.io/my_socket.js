@@ -14,12 +14,11 @@ var main = io.listen(server);
 main.sockets.on('connection', function(socket) {
 	console.log("请求次数"+i)
 	  //1,控制器正发送id
-	  socket.on("sid",function(e){
-		  //theId=e;
+	  socket.on("client",function(e){
 		  //2,让模板识别id
-		  console.log("监听sid"+e)
+		  console.log("监听client"+e)
 		  
-		  socket.broadcast.emit("tid",e)
+		  socket.broadcast.emit("clientServer",e)
 	  });
 	  
 	i++;

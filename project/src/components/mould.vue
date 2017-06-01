@@ -2,9 +2,10 @@
   <div>
     <h2>模板</h2>
 	
-	<!-- 选择元素属性后新增元素 -->
 	<!-- 下拉框方式 -->
-	<input list="browsers" id="chose" @change="chose($event.target.value)">
+	<div>
+	<span>选择图表宽度新增一个图表：</span>
+	<input list="browsers" id="chose" @change="chose($event.target.value)" value="30">
 	<datalist id="browsers">
 	  <option value="30"></option>
 	  <option value="40"></option>
@@ -12,27 +13,53 @@
 	  <option value="60"></option>
 	  <option value="50"></option>
 	</datalist>
-	<!-- 值域方式 -->
-	<input type="range" min="0" max="100" v-model="range">
-	<p>值域值：{{range}}</p>
-	
-	<button @click="shownow=true">show</button>
-	<p v-if="shownow">nononono</p>
-	<button @click="generate">生成元素</button>
-	
-	<!-- 这个元素用来克隆绑定的事件 -->
-	<div class="added" draggable="true" v-show="child.length>1" @dragstart="test.drag($event)" @click="swing($event)" v-for="(i,index) in child" :id="'added'+index">
-		<div :id="'main'+index" style="width:600px; height:300px;" ></div>
 	</div>
-	<button @click="clear">清空</button>
 	
-	<!--<p draggable="true" @dragstart="test.drag($event)" @click="swing($event)">测试，可以将我拖动到下方或者图表区域</p>-->
-	<!-- 页面容器 -->
+	<div>
+	<span>填入新增元素的样式：</span>
+	<input id="style" value="text-align:center" />
+	</div>
+	
+	<div>
+	<input id="title" value="标题" />
+	<button @click="generate('h2')">生成h2元素</button>
+	</div>
+	
+	<div>
+	<textarea id="graph" placeholder="请输入段落" class="graph"></textarea>
+	<button @click="generate('p')">生成p元素</button>
+	</div>
+	
+	<div>
+	<button @click="generate('div')">生成div元素</button>
+	</div>
+	
+	<div>
+	<button @click="generate('video')">生成video元素</button>...
+	<input type="file" @change="file($event)" id="file" v-show="false" />
+	</div>
+	
+	<div>
+	<button @click="clear">清空所有！</button>
+	</div>
+	
+	<div>
+	<button @click="done">[完成]</button>
+	</div>
+	
+	<!-- 最终作品的页面容器 -->
 	<div class='wrap' @drop="test.drop($event)" @dragover="test.allowDrop($event)" id="wrap">
-	<p class='test' >位置一</p><p class="test">位置二</p>
+	<el :test="test" v-for="(item,index) in els" :els="els[index]" :index="index"></el>
 	</div>
-	<button @click="done">完成</button>
-	<el v-if="show" :test="test" v-for="(item,index) in el" :type="type"></el>
+	
+	<!-- 生成的页面元素都在下方 -->
+	<!-- 这个元素用来克隆图表以及绑定的事件（一定条件下显示） -->
+	<!--  <div class="added" draggable="true" v-show="child.length>1" @dragstart="test.drag($event)" @click="swing($event)" v-for="(i,index) in child" :id="'added'+index">
+		<div :id="'main'+index" style="width:600px; height:300px;" ></div>
+	</div> -->
+	
+	<ch class='' v-for="i in child" :test="test" :index="index"></ch>
+	
   </div>
 </template>
 
@@ -42,6 +69,7 @@ import echarts_gl from 'echarts-gl'
 import store from '../vuex/store'
 import io from '../assets/socket.io.js'
 import el from './element.vue'
+import ch from './chart.vue'
 
 var URL="http://localhost:7474"
 //记得url改变后再次调用
@@ -51,22 +79,23 @@ console.log("!!!!!————————————————————�
 export default {
   data() {
     return {
-		show: true,
-		range:50,
 		child:[0],
-		shownow:false,
-		el:[0],
-		type:"p"
+		els:[],
+		index:0,
+		src:""
     }
   },
   props:["test"],
   mounted(){
+  /*
   	var main=echarts.init(document.getElementById('main'+(this.child.length-1)));
   	this.child.push(main)
   	main.setOption(store.state[store.state.types])
+*/
   },
   methods:{
 	  chose(size){
+		//新增一个图表
 	  
 		var main=echarts.init(document.getElementById('main'+(this.child.length-1))).setOption(store.state[store.state.types]);
 		document.getElementsByClassName("added")[this.child.length-1].style.width=size+'px';
@@ -88,12 +117,18 @@ export default {
 	  },
 	  clear(){
 		this.child.splice(1,this.child.length);
+		this.els.length=0;
 	  },
 	  done(){
 	  //上传到后台存储
 	  //js部分
 	  var strjs="";
-	  strjs+="var main=echarts.init(document.getElementById('main1'));main.setOption("+JSON.stringify(store.state[store.state.types])+");"
+	  //temp:
+	  strjs+="if(document.getElementById('main"+(this.index-1)+"')){var main=echarts.init(document.getElementById('main"+(this.index-1)+"'));main.setOption("+JSON.stringify(store.state[store.state.types])+");}";
+	  strjs+="if(video"+(this.index-1)+"){video"+(this.index-1)+".src='test.mp4';";
+	  strjs+='var socket = io.connect("http://localhost:7676");'
+	  strjs+='socket.on("clientServer",function(e){'+
+		'video'+(this.index-1)+'.play()})}'
 	  
 	  //html部分
 	  var str="";
@@ -103,16 +138,14 @@ export default {
 	  str+="<\/script>";
 	  str+="<script src='../../lib/echarts-gl.min.js'>";
 	  str+="<\/script>";
+	  str+="<script src='../src/assets/socket.io.js'><\/script>";
 	  str+="<script src='test.js'>";
 	  str+="<\/script><\/body><\/html>";
 	  
+	  socket.emit('news', str);	  
+	  console.log("html down")
 	  socket.emit('js', strjs);
-	socket.emit('news', str);
-	
-	    socket.on('my other event', function (data) {
-			console.log(data);
-	    });
-	  	console.log("文件写入完成")
+	  console.log("js down")
 			
 	  },
 	  swing(e){
@@ -120,18 +153,31 @@ export default {
 			store.state.types=this.child[1].getOption().series[0].type;
 			store.state[store.state.types]=this.child[1].getOption();
 	  },
-	  callback(){
-	  },
 	  generate(e){
-	  	this.el.push(this.el.length)
-	  	this.type="div"
+	  	if(e == 'video'){
+			file.click();
+		}else if(e == "h2"){
+			this.els.push({type:e,text:title.value,style:style.value})
+			style.value=""
+		}else if(e == "p"){
+			this.els.push({type:e,text:graph.value,style:style.value})
+		}else{
+			this.els.push({type:e,style:style.value})
+			style.value=""
+		}
+		this.index++;
+	  },
+	  file(e){
+		socket.emit('video', e.target.files[0]);	
+		console.log("video down")
+		this.els.push({type:"video",src:window.URL.createObjectURL(e.target.files[0]),style:style.value})
 	  }
   },
-  components: { el }
+  components: { el,ch }
 }
 </script>
 
-<style lang="less">
+<style>
 .wrap{
 	padding:10px;
 	border:3px dashed #000;
@@ -142,5 +188,8 @@ export default {
 }
 .five{
 	width:50%;
+}
+.graph{
+	height:3rem;
 }
 </style>

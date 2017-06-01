@@ -1,10 +1,14 @@
 <template>
   <div>
-  <!-- 表格部分 -->
-
-  <h2 @click="toApp">表格部分</h2>
-  <button @click="save()">保存</button>
-<div><span v-for="i in $store.state[$store.state.types].series[0].data"><input v-for="y in i" :value="y" /></span></div>
+  
+  <h2>表格部分</h2>
+	
+	<div>
+	<span v-for="(i,index) in $store.state[$store.state.types].series[0].data">
+		<input v-for="(y,yndex) in i" :value="y" @change="changed($event.target.value,index,yndex)" />
+	</span>
+	</div>
+	
   </div>
 </template>
 
@@ -18,25 +22,19 @@ export default {
 		
     }
   },
-  props:["parentvalue","tablevalue"],
   mounted(){
 	var self=this;
 	console.log('table.vue here')
   },
   methods:{
-	send:function(){
+	send(){
 		//组件间传值
 		bus.$emit('test','test');
 	},
-
-	save:function(){
-		//组件数据同步
-		this.$store.commit('increment')
-	},
-	toApp:function(){
-		//子组件传送至父组件
-		this.$emit("toSingle",{do:"从子组件传值到父组件"})
-
+	changed(e,i,y){
+		console.log(e,i,y)
+		store.state[store.state.types].series[0].data[i][y]=e;
+		this.$store.commit('changeTable',true);
 	}
   }
 }
